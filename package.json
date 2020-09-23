@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/MilanLoveless/clock-mod/issues"
   },
-  "homepage": "https://github.com/MilanLoveless/clock-mod#readme"
+  "homepage": "https://github.com/MilanLoveless/clock-mod#readme",
+  "dependencies": {
+    "scribbletune": "^3.15.0"
+  }
 }
