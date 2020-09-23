@@ -1,6 +1,7 @@
 const scribble = require('scribbletune');
 const length = 3 * 5 * 7 * 16;
 
+const twos = [...Array(length).keys()].map((a) => a + 1).filter((a) => a % 2 === 0);
 const threes = [...Array(length).keys()].map((a) => a + 1).filter((a) => a % 3 === 0);
 const fives = [...Array(length).keys()].map((a) => a + 1).filter((a) => a % 5 === 0);
 const sevens = [...Array(length).keys()].map((a) => a + 1).filter((a) => a % 7 === 0);
@@ -99,7 +100,10 @@ scribble.midi(snare, 'snare.mid');
 
 // Hats
 
-const finalhats = finalBasic.filter((a) => a % 4 !== 1);
+const finalhats = Array.from(new Set(threes.concat(twos).sort((a, b) => a - b)))
+  .map((a, i) => (i % 2 === 1 ? null : a))
+  .filter((a) => !!a)
+  .filter((a) => a % 4 !== 1);
 const hatsPattern = [...Array(length).keys()].map((a) => (finalhats.includes(a + 1) ? 'x' : '-')).join('');
 
 console.log('Hats:');
