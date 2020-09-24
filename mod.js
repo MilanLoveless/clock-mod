@@ -1,5 +1,5 @@
 const scribble = require('scribbletune');
-const length = 3 * 5 * 7 * 16;
+const length = 32 * 16;
 
 const twos = [...Array(length).keys()].map((a) => a + 1).filter((a) => a % 2 === 0);
 const threes = [...Array(length).keys()].map((a) => a + 1).filter((a) => a % 3 === 0);
@@ -100,19 +100,19 @@ scribble.midi(snare, 'snare.mid');
 
 // Hats
 
-const finalhats = Array.from(new Set(threes.concat(twos).sort((a, b) => a - b)))
-  .map((a, i) => (i % 2 === 1 ? null : a))
-  .filter((a) => !!a)
-  .filter((a) => a % 4 !== 1);
-const hatsPattern = [...Array(length).keys()].map((a) => (finalhats.includes(a + 1) ? 'x' : '-')).join('');
+// const finalhats = Array.from(new Set(threes.concat(twos).sort((a, b) => a - b)))
+//   .map((a, i) => (i % 2 === 1 ? null : a))
+//   .filter((a) => !!a)
+//   .filter((a) => a % 4 !== 1);
+// const hatsPattern = [...Array(length).keys()].map((a) => (finalhats.includes(a + 1) ? 'x' : '-')).join('');
 
-console.log('Hats:');
-console.log(hatsPattern);
+// console.log('Hats:');
+// console.log(hatsPattern);
 
 // Create a clip that plays the middle C
 const hats = scribble.clip({
   notes: 'c4',
-  pattern: hatsPattern,
+  pattern: '--x-',
   accent: '--x-',
 });
 
@@ -135,3 +135,35 @@ const bass = scribble.clip({
 
 // Render a MIDI file of this clip
 scribble.midi(bass, 'bass.mid');
+
+// Arp
+const finalArp = finalBass;
+const arpPattern = [...Array(length).keys()].map((a) => (finalArp.includes(a + 1) ? 'xxxxxxx-' : '-------')).join('');
+
+console.log('Arp:');
+console.log(arpPattern);
+
+// Create a clip that plays the middle C
+const arp = scribble.clip({
+  notes: scribble.arp({ chords: 'Cmaj7-4 Fmaj7-4 Dmin7-4 Gmaj7-4', order: '0123210', subdiv: '16n' }),
+  pattern: arpPattern,
+});
+
+// Render a MIDI file of this clip
+scribble.midi(arp, 'arp.mid');
+
+// Chords
+const finalChord = finalBass;
+const chordPattern = [...Array(length).keys()].map((a) => (finalChord.includes(a + 1) ? 'x' : '-')).join('');
+
+console.log('Chord:');
+console.log(chordPattern);
+
+// Create a clip that plays the middle C
+const chord = scribble.clip({
+  notes: ['CM', 'FM', 'Dm', 'GM'],
+  pattern: chordPattern,
+});
+
+// Render a MIDI file of this clip
+scribble.midi(chord, 'chord.mid');
